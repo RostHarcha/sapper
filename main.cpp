@@ -2,7 +2,8 @@
 #include <ctime>
 #include <string>
 #include <vector>
- 
+#include <sstream>
+
 struct Settings{
     int size_x = 5;
     int size_y = 10;
@@ -48,7 +49,7 @@ public:
 };
  
 // view
-class ConcoleDrawer{
+class ConsoleDrawer{
 private:
    
 public:
@@ -64,18 +65,27 @@ public:
 };
  
 // controller
-class ConcoleController{
+class ConsoleController{
+private:
+	std::vector<std::string> command;
+
 public:
     void use(std::string input){
-       
+        std::cout << "USE\n";
+		std::stringstream ss(input);
+		while(!ss.eof()){
+			ss >> command.back();
+		}
+		
+		if(command[0] == "flag") std::cout << command[0];
     }
 };
  
 class Game{
 private:
     Map map;
-    ConcoleDrawer drawer;
-    ConcoleController controller;
+    ConsoleDrawer drawer;
+    ConsoleController controller;
  
     int tick(){
         std::string input;
@@ -83,18 +93,16 @@ private:
         if(input == "stop") return -1;
         else controller.use(input);
        
-        controller.manipulate();
-        map.update();
-        drawer.draw();
+        //controller.manipulate();
+        //map.update();
+        //drawer.draw();
        
         return 0;
     }
    
 public:
     void new_game(){
-        std::cout << "NG\n";
         map.create();
-        std::cout << "CREATED\n";
         drawer.draw();
         while(tick() == 0){}
     }
@@ -102,12 +110,15 @@ public:
  
 int main(){
     Game game; 
-   
-    std::cout << "size x: ";
-    std::cin >> set.size_x;
-    std::cout <<"size y:";
-    std::cin >> set.size_y;
-   
+	
+	std::string auto_game;
+	std::cin >> auto_game;
+	if(auto_game != "auto"){
+		std::cout << "size x: ";
+		std::cin >> set.size_x;
+		std::cout <<"size y:";
+		std::cin >> set.size_y;
+	}
     game.new_game();
    
     return 0;
