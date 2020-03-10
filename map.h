@@ -1,8 +1,11 @@
+#include "settings.h"
+
 // model
 class Map{
 private:
     std::vector<bool> mine;
     std::vector<int> state; // 0 - closed, 1 - oppened, 2 - flag
+	Settings set;
    
     int cell(int x, int y){
         return y * set.size_x + x;
@@ -29,9 +32,10 @@ private:
     }
  
 public:
-    void create(){
-        create_arrays();
+	void create(Settings _set){
+		set = _set;
+		create_arrays();
         create_mines();
         close_all_cells();
-    }
+	}
 };
