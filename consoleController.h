@@ -1,3 +1,5 @@
+#include "settings.h"
+
 // controller
 class ConsoleController{
 private:
