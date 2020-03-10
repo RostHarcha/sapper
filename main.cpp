@@ -24,7 +24,7 @@ private:
        
         //controller.manipulate();
         //map.update();
-        //drawer.draw();
+        drawer.draw();
        
         return 0;
     }
