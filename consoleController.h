@@ -22,10 +22,3 @@ public:
 		if(command[0] == "flag") std::cout << command[0];
     }
 };
-
-int main(){
-    ConsoleController controller;
-    
-    controller.use();
-    return 0;
-}
