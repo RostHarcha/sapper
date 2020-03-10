@@ -7,18 +7,14 @@
 #include "map.h"
 #include "consoleDrawer.h"
 #include "consolecer.h"
-
-struct Settings{
-    int size_x = 5;
-    int size_y = 10;
-    int mines = 40;
-}set;
+#include "settings.h"
  
 class Game{
 private:
     Map map;
     ConsoleDrawer drawer;
-    ConsoleController controller;
+	ConsoleController controller;
+	Settings set;
  
     int tick(){
         std::string input;
@@ -34,25 +30,26 @@ private:
     }
    
 public:
-    void new_game(){
-        map.create();
-        drawer.draw();
+    Game(Settings _set){
+        set = _set;
+		set.mines = (set.size_x*set.size_y)*set.mines/100;
+		drawer.set(set);
+		
+        map.create(set);
+        drawer.draw(set);
         while(tick() == 0){}
     }
 };
  
 int main(){
-    Game game; 
+    Settings set;
+	std::cout << "size x: ";
+	std::cin >> set.size_x;
+	std::cout <<"size y: ";
+	std::cin >> set.size_y;
+	std::cout << "mines percent: ";
+	std::cin >> set.mines;
 	
-	std::string auto_game;
-	std::cin >> auto_game;
-	if(auto_game != "auto"){
-		std::cout << "size x: ";
-		std::cin >> set.size_x;
-		std::cout <<"size y:";
-		std::cin >> set.size_y;
-	}
-    game.new_game();
-   
+    Game game(set);   
     return 0;
 }
