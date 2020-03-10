@@ -33,8 +33,10 @@ public:
     Game(Settings _set){
         set = _set;
 		set.mines = (set.size_x*set.size_y)*set.mines/100;
-        map.create();
-        drawer.draw();
+		drawer.set(set);
+		
+        map.create(set);
+        drawer.draw(set);
         while(tick() == 0){}
     }
 };
