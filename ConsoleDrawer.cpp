@@ -9,11 +9,12 @@ int ConsoleDrawer::cell(int x, int y) {
 }
 
 void ConsoleDrawer::draw_cell(int x, int y, std::vector<int> state) {
-    if (state[cell(x, y)] == 1) std::cout << "[" << cell_sign[cell(x, y)] << "]";
+    if (state[cell(x, y)] == 1) {
+        if(cell_sign[cell(x, y)] == 9) std::cout << "[@]";
+        else std::cout << "[" << cell_sign[cell(x, y)] << "]";
+    }
     else if (state[cell(x, y)] == 2) std::cout << "[F]";
     else std::cout << "[ ]";
-    //std::cout << "[" << state[cell(x, y)] << "]";
-
 }
 
 void ConsoleDrawer::create(Settings _set, std::vector<int> _cell_sign) {
@@ -22,7 +23,7 @@ void ConsoleDrawer::create(Settings _set, std::vector<int> _cell_sign) {
 }
 
 void ConsoleDrawer::draw(std::vector<int> state) {
-    std::cout << "\t ";
+    std::cout << "\n\t ";
     for (int i = 0; i < set.size_x; i++) {
         if (i < 10) std::cout << i << "   ";
         if (9 < i and i < 100) std::cout << i << "  ";

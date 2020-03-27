@@ -1,10 +1,10 @@
 #pragma once
 #include <string>
 struct Settings {
-    int size_x = 15;
-    int size_y = 25;
-    int mines = 30;
-    int seed = 0;
+    int size_x = 15; // 15
+    int size_y = 25; // 25
+    int mines = 15; // 15
+    int seed = 0; // 0
 };
 
 struct Command {

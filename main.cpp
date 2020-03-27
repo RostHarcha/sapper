@@ -4,7 +4,7 @@
 #include "Map.h"
 #include "ConsoleController.h"
 
-constexpr auto DEBUG_MODE = 1;
+constexpr auto DEBUG_MODE = 0;
 
 class Game {
 private:
@@ -12,21 +12,35 @@ private:
     ConsoleDrawer drawer;
     ConsoleController controller;
     Settings set;
+    bool game_over = 0;
+    bool win = 0;
+
+    bool is_game_over(std::string action) {
+        win = map.win();
+        if (win) return 1;
+        if (action == "stop") return 1;
+        if (map.is_game_over()) return 1;
+        return 0;
+    }
+
+    void help() {
+        std::cout << "General view of the command: [action] <x> <y>\n";
+        std::cout << "|help" << "\t\t" << "call for help\n";
+        std::cout << "|stop" << "\t\t" << "stop the game\n";
+        std::cout << "|open <x> <y>" << "\t" << "open the cell\n";
+        std::cout << "|flag <x> <y>" << "\t" << "flag the cell\n";
+        std::cout << "|-flag <x> <y>" << "\t" << "remove flag from the cell\n";
+    }
 
     int tick() {
-        std::string input;
-        std::cin >> input;
-        if (input == "stop") return -1;
-        //else controller.use();
+        //system("cls");
+        Command input = controller.get_input();
+        map.process_tick(input.action, input.x, input.y);
+        drawer.draw(map.get_current_state());
 
-        else {
-
-        }
-
-        //controller.manipulate();
-        //map.update();
-        //drawer.draw();
-
+        if (input.action == "help") help();
+        
+        game_over = is_game_over(input.action);
         return 0;
     }
 
@@ -34,13 +48,17 @@ public:
     Game(Settings _set) {
         set = _set;
         set.mines = (set.size_x * set.size_y) * set.mines / 100;
+        srand(set.seed);
 
         map.create(set);
         controller.create(set);
         drawer.create(set, map.get_cell_signs());
 
         drawer.draw(map.get_current_state());
-        while (tick() == 0) {}
+        for (;!game_over;) tick();
+        if(win) std::cout << "\n###Congrats! You won this game!###\n";
+        else std::cout << "\nGame over!\n";
+        
     }
 };
 

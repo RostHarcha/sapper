@@ -17,13 +17,10 @@ Command ConsoleController::analyse_command(std::vector<std::string> command) {
     switch (command.size()) {
     case 1:
         output.action = command[0];
-        if (command[0] == "stop") command[0] = "game_over";
-        return output;
+        break;
     case 3:
         output = { command[0], std::atoi(command[1].c_str()), std::atoi(command[2].c_str()) };
         break;
-    default:
-        return output;
     }
     return output;
 }
